@@ -1,0 +1,4 @@
+[template]
+src  = "defaults.yml.tmpl"
+dest = "/usr/share/nginx/html/defaults.yml"
+keys = [ "/splunk" ]

@@ -1,0 +1,35 @@
+---
+retry_num: 50
+splunk:
+  user: splunk
+  group: splunk
+  opt: /opt
+  home: /opt/splunk
+  exec: /opt/splunk/bin/splunk
+  pid: /opt/splunk/var/run/splunk/splunkd.pid
+  app_paths:
+    default: /opt/splunk/etc/apps
+    httpinput: /opt/splunk/etc/apps/splunk_httpinput
+    idxc: /opt/splunk/etc/master-apps
+    shc: /opt/splunk/etc/shcluster/apps
+  svc_port: {{ getv "/splunk/svc/port" "8089" }}
+  hec_disabled: {{ getv "/splunk/hec/disabled" "0" }}
+  hec_enableSSL: {{ getv "/splunk/hec/enablessl" "1" }}
+  hec_port: {{ getv "/splunk/hec/port" "8088" }}
+  hec_token: {{ getv "/splunk/hec/token" }}
+  http_port: {{ getv "/splunk/http/port" "8000" }}
+  password: {{ getv "/splunk/password" }}
+  s2s_port: {{ getv "/splunk/s2s/port" "9997" }}
+  idxc:
+    enable: {{ getv "/splunk/idxc/enable" "false" }}
+    label: {{ getv "/splunk/idxc/label" "idxc_label" }}
+    replication_factor: {{ getv "/splunk/idxc/replication/factor" "3" }}
+    replication_port: {{ getv "/splunk/idxc/replication/port" "4001" }}
+    search_factor: {{ getv "/splunk/idxc/search_factor" "3" }}
+    secret: {{ getv "/splunk/idxc/secret" }}
+  shc:
+    enable: {{ getv "/splunk/shc/enable" "false" }}
+    label: {{ getv "/splunk/shc/label" "shc_label" }}
+    replication_factor: {{ getv "/splunk/shc/replication/factor" "3" }}
+    replication_port: {{ getv "/splunk/shc/replication/port" "4001" }}
+    secret: {{ getv "/splunk/shc/secret" }}
