@@ -43,3 +43,48 @@ In the Kubernetes example manifest provided, we use a ConfigMap to build `secret
 which is mounted in to the running container. For non-secret configurations, we
 leverage Kubernetes container runtime environment variable support.
 
+### Deploying the example
+
+You can use this repo as working example, assuming you have a Kubernetes cluster
+up and running, and an AWS account to add secrets to.
+
+> It's recommended that you fork or copy this repo, build your own image and push
+> it to your docker registry for production use.
+
+#### Setup secrets
+
+Before deploying the Kubernetes manifest, you'll first need to create the required
+secrets in AWS.
+
+```bash
+# HEC Token
+aws secretsmanager create-secret --name "/splunk/hec/token" --secret-string="xxx-xxx-xxx-xxx"
+
+# Splunk Password
+aws secretsmanager create-secret --name "/splunk/password" --secret-string="changeme"
+
+# Splunk Indexer Cluster Secret
+aws secretsmanager create-secret --name "/splunk/idxc/secret" --secret-string="changeme"
+
+# Splunk Search Cluster Secret
+aws secretsmanager create-secret --name "/splunk/shc/secret" --secret-string="changeme"
+```
+
+#### Setup secrets
+
+Once secrets have been created, simply apply the Kubernetes manifest.
+
+```bash
+kubectl apply -f k8s-example.yaml
+```
+
+#### Including a License
+
+You can add your license to AWS Secrets Manager using the following. If set,
+the container will automatically build the license file at run time.
+
+```bash
+# license
+aws secretsmanager create-secret --name "/splunk/license" \
+    --secret-string="$(cat /path/to/your_license.lic)"
+```
