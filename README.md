@@ -12,15 +12,16 @@
 * Splunk's Docker Image
   * https://hub.docker.com/r/splunk/splunk/
   * https://github.com/splunk/docker-splunk
+  * https://github.com/splunk/splunk-ansible
 * `confd` - https://github.com/kelseyhightower/confd
 * `summon` - https://github.com/cyberark/summon
 
 ### Description
 
-The latest [official Splunk docker image](https://hub.docker.com/r/splunk/splunk/)
-uses [Ansible](https://github.com/splunk/splunk-ansible) under the hood for setup,
+The latest [official Splunk docker image][2]
+uses [Ansible][6] under the hood for setup,
 configuration and auto-discovery. Using the pattern set forth by Splunk when
-deploying via [Kubernetes](https://kubernetes.io/), a `default.yml` and a license
+deploying via [Kubernetes][1], a `default.yml` and a license
 file can be provided via http to allow for external configurations using the internal
 networking support.
 
@@ -29,19 +30,18 @@ networking support.
 
 This repo provides all the necessary files and configuration to build an Nginx
 image setup to define `default.yml` values and a license file using [AWS Secrets
-Manager](https://aws.amazon.com/secrets-manager/) for secrets and environment
+Manager][7] for secrets and environment
 variables passed to the container for other configurations.
 
-The Docker build contained herein includes [confd](https://github.com/kelseyhightower/confd)
-templates, which are included in the container at build time. It uses
-[summon](https://github.com/cyberark/summon) to pull secret values from AWS
-Secrets Manager and [godotenv](https://github.com/joho/godotenv) inject the
-secrets in to the environment at runtime via the entrypoint. [summon](https://github.com/cyberark/summon)
-looks for a file on disk -- `secrets.yaml` -- which is used to define the mapping
-between AWS Secret Manager keys and the environment variables they'll be applied to.
-In the Kubernetes example manifest provided, we use a ConfigMap to build `secrets.yaml`,
-which is mounted in to the running container. For non-secret configurations, we
-leverage Kubernetes container runtime environment variable support.
+The Docker build contained herein includes [confd][4] templates, which are included
+in the container at build time. It uses [summon][5] to pull secret values from AWS
+Secrets Manager and [godotenv][8] inject the secrets in to the environment at runtime
+via the entrypoint. [summon][5] looks for a file on disk -- `secrets.yaml` -- which
+is used to define the mapping between [AWS Secret Manager][7] keys and the environment
+variables they'll be applied to.  In the Kubernetes example manifest provided, we
+use a ConfigMap to build `secrets.yaml`, which is mounted in to the running container.
+For non-secret configurations, we leverage Kubernetes container runtime environment
+variable support.
 
 ### Deploying the example
 
@@ -70,6 +70,9 @@ aws secretsmanager create-secret --name "/splunk/idxc/secret" --secret-string="c
 aws secretsmanager create-secret --name "/splunk/shc/secret" --secret-string="changeme"
 ```
 
+It's worth noting that [summon][5] is configurated to ignore missing secrets and
+continue without error.
+
 #### Setup secrets
 
 Once secrets have been created, simply apply the Kubernetes manifest.
@@ -88,3 +91,12 @@ the container will automatically build the license file at run time.
 aws secretsmanager create-secret --name "/splunk/license" \
     --secret-string="$(cat /path/to/your_license.lic)"
 ```
+
+[1]: https://kubernetes.io/
+[2]: https://hub.docker.com/r/splunk/splunk/
+[3]: https://github.com/splunk/docker-splunk
+[4]: https://github.com/kelseyhightower/confd
+[5]: https://github.com/cyberark/summon
+[6]: https://github.com/splunk/splunk-ansible
+[7]: https://aws.amazon.com/secrets-manager/
+[8]: https://github.com/joho/godotenv
