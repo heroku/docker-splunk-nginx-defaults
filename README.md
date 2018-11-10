@@ -1,16 +1,28 @@
 # docker-splunk-nginx-defaults-awssm
 
-Splunk default.yml Nginx container populated by AWS Secrets Manager
+#### Splunk default.yml Nginx container populated by AWS Secrets Manager
 
 > This is an example or prototype, as opposed to a complete and usable component.
+
+---
+
+### Resources
+
+* Kubernetes - https://kubernetes.io/
+* Splunk's Docker Image
+  * https://hub.docker.com/r/splunk/splunk/
+  * https://github.com/splunk/docker-splunk
+* `confd` - https://github.com/kelseyhightower/confd
+* `summon` - https://github.com/cyberark/summon
 
 ### Description
 
 The latest [official Splunk docker image](https://hub.docker.com/r/splunk/splunk/)
 uses [Ansible](https://github.com/splunk/splunk-ansible) under the hood for setup,
 configuration and auto-discovery. Using the pattern set forth by Splunk when
-deploying via Kubernetes, a `default.yml` and a license file can be provided via
-http to allow for external configurations using the internal networking support.
+deploying via [Kubernetes](https://kubernetes.io/), a `default.yml` and a license
+file can be provided via http to allow for external configurations using the internal
+networking support.
 
 > See: https://github.com/splunk/docker-splunk/blob/dd1c3e5cccfefac18ef559e4d6b6454917cc86e1/test_scenarios/kubernetes/README.md#nginx
 > for additional information on default.yml.
@@ -30,3 +42,4 @@ between AWS Secret Manager keys and the environment variables they'll be applied
 In the Kubernetes example manifest provided, we use a ConfigMap to build `secrets.yaml`,
 which is mounted in to the running container. For non-secret configurations, we
 leverage Kubernetes container runtime environment variable support.
+
