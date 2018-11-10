@@ -12,6 +12,7 @@ data:
     SPLUNK_PASSWORD: !var /splunk/password
     SPLUNK_IDXC_SECRET: !var /splunk/idxc/secret
     SPLUNK_SHC_SECRET: !var /splunk/shc/secret
+    SPLUNK_LICENSE: !var /splunk/license
 
 ---
 # Setup Service for manging internal networking.

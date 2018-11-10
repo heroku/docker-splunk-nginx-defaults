@@ -1,0 +1,4 @@
+[template]
+src  = "license.lic.tmpl"
+dest = "/usr/share/nginx/html/license.lic"
+keys = [ "/splunk" ]
